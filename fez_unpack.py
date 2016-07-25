@@ -18,13 +18,17 @@ def unpack(src, dest):
             filename = reader.read(str)
             filesize = reader.read(int)
             filedata = reader.pull(filesize)
+            #Linux fix
+            filename = filename.replace("\\", "/")
+
             print '"%s" : %d' % (filename, filesize)
             filename = os.path.join(dest, filename) + '.xnb'
-            filedir, _, _ = filename.rpartition('\\')
+            filedir, _, _ = filename.rpartition('/')
             if filedir:
                 filedir = os.path.normpath(filedir)
                 if not os.path.isdir(filedir):
                     os.makedirs(filedir)
+
             with open(filename, 'wb') as out_file:
                 out_file.write(filedata)
 
